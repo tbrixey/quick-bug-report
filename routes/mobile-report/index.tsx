@@ -1,19 +1,23 @@
 import { Handlers } from "$fresh/server.ts";
 
+const kv = await Deno.openKv();
+
 export const handler: Handlers = {
   async GET(req, ctx) {
     return await ctx.render();
   },
   async POST(req, ctx) {
     const form = await req.formData();
-    console.log("FORM", form);
+
     const title = form.get("title")?.toString();
+    const details = form.get("details")?.toString();
+    const report = { title, details, id: crypto.randomUUID() };
+    const reportKey = ["bug", report.id];
+    const ok = await kv.atomic().set(reportKey, report).commit();
+    if (!ok) throw new Error("Something went wrong.");
 
-    // Add email to list.
-
-    // Redirect user to thank you page.
     const headers = new Headers();
-    headers.set("location", "/thanks-for-subscribing");
+    headers.set("location", "/thanks-for-submitting");
     return new Response(null, {
       status: 303, // See Other
       headers,
