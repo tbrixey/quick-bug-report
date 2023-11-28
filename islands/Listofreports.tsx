@@ -19,9 +19,7 @@ export default function Listofreports() {
       const resp = await fetch(
         "/api/bug-report",
       );
-      console.log("RESPONSE", resp);
       const json = await resp.json();
-      console.log("RESPONSE", json);
       reportSig.value = [...reportSig.value, ...json];
     } catch (error) {
       console.log(error.message);
@@ -36,8 +34,21 @@ export default function Listofreports() {
 
   return (
     <div class="flex gap-8 py-6">
-      {isLoadingSig && "Loading..."}
-      {reportSig.value.length > 0 && JSON.stringify(reportSig)}
+      {isLoadingSig.value && "Loading..."}
+      {reportSig.value.length > 0 &&
+        reportSig.value.map((v) => (
+          <a class="p-4 rounded bg-slate-300 drop-shadow-md hover:bg-slate-200 transition-all cursor-pointer active:bg-slate-100">
+            <div>
+              <p>{v.id}</p>
+            </div>
+            <div>
+              <p class="font-bold">{v.title}</p>
+            </div>
+            <div>
+              <p>{v.details}</p>
+            </div>
+          </a>
+        ))}
     </div>
   );
 }

@@ -12,12 +12,17 @@ export const handler: Handlers<Report | null> = {
   async POST(req, _ctx) {
     const report = (await req.json()) as Report;
     report.id = crypto.randomUUID();
-    const reportKey = ["bug", report.id];
+    const reportKey = ["reports", report.id];
     const ok = await kv.atomic().set(reportKey, report).commit();
     if (!ok) throw new Error("Something went wrong.");
     return new Response(JSON.stringify(report));
   },
   async GET(req, _ctx) {
-    return new Response(JSON.stringify({ title: "test" }));
+    const entries = kv.list({ prefix: ["reports"] });
+    const listOfReports = [];
+    for await (const entry of entries) {
+      listOfReports.push(entry.value);
+    }
+    return new Response(JSON.stringify(listOfReports));
   },
 };

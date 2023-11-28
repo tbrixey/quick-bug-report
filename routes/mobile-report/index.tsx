@@ -9,12 +9,13 @@ export const handler: Handlers = {
     const title = form.get("title")?.toString();
     const details = form.get("details")?.toString();
     const report = { title, details, id: crypto.randomUUID() };
-    const reportKey = ["bug", report.id];
+    const reportKey = ["reports", report.id];
     const ok = await kv.atomic().set(reportKey, report).commit();
     if (!ok) throw new Error("Something went wrong.");
 
     const headers = new Headers();
-    headers.set("location", "/mobile-report/thanks");
+    // headers.set("location", "/mobile-report/thanks");
+    headers.set("location", "/dashboard");
     return new Response(null, {
       status: 303,
       headers,
