@@ -3,9 +3,6 @@ import { Handlers } from "$fresh/server.ts";
 const kv = await Deno.openKv();
 
 export const handler: Handlers = {
-  async GET(req, ctx) {
-    return await ctx.render();
-  },
   async POST(req, ctx) {
     const form = await req.formData();
 
@@ -17,9 +14,9 @@ export const handler: Handlers = {
     if (!ok) throw new Error("Something went wrong.");
 
     const headers = new Headers();
-    headers.set("location", "/thanks-for-submitting");
+    headers.set("location", "/mobile-report/thanks");
     return new Response(null, {
-      status: 303, // See Other
+      status: 303,
       headers,
     });
   },

@@ -17,4 +17,7 @@ export const handler: Handlers<Report | null> = {
     if (!ok) throw new Error("Something went wrong.");
     return new Response(JSON.stringify(report));
   },
+  async GET(req, _ctx) {
+    return new Response(JSON.stringify({ title: "test" }));
+  },
 };
