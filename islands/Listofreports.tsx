@@ -37,7 +37,10 @@ export default function Listofreports() {
       {isLoadingSig.value && "Loading..."}
       {reportSig.value.length > 0 &&
         reportSig.value.map((v) => (
-          <a class="p-4 rounded bg-slate-300 drop-shadow-md hover:bg-slate-200 transition-all cursor-pointer active:bg-slate-100">
+          <a
+            class="p-4 rounded bg-slate-300 drop-shadow-md hover:bg-slate-200 transition-all cursor-pointer active:bg-slate-100"
+            href={`/dashboard/${v.id}`}
+          >
             <div>
               <p>{v.id}</p>
             </div>

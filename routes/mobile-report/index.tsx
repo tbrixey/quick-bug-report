@@ -8,7 +8,13 @@ export const handler: Handlers = {
 
     const title = form.get("title")?.toString();
     const details = form.get("details")?.toString();
-    const report = { title, details, id: crypto.randomUUID() };
+    const report = {
+      title,
+      details,
+      id: crypto.randomUUID(),
+      status: "open",
+      creationDate: Date.now(),
+    };
     const reportKey = ["reports", report.id];
     const ok = await kv.atomic().set(reportKey, report).commit();
     if (!ok) throw new Error("Something went wrong.");
